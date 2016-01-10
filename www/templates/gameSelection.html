@@ -1,0 +1,17 @@
+<ion-view title="Game Selection">
+    <ion-content overflow-scroll="true" padding="true" style="background: url(img/RzuOWWn4TeWoEUXSJddx_tan_background.jpg) no-repeat center;" class="has-header">
+      <div class="operator_field">
+        <div class="item item-divider">
+          Select Game Template
+        </div>
+        <ion-list>
+          <ion-item ng-repeat="template_item in template_list.templates" class="item-thumbnail-left"
+                    href="#/gameConfiguration/{{size}}/{{template_item.id}}">
+            <img>
+            <h2>{{template_item.name}}</h2>
+            <p>template_item.id = {{template_item.id}}</p>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-content>
+</ion-view>

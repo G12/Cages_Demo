@@ -1,0 +1,47 @@
+<ion-view title="Cages Puzzle">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+
+      <div data-role="page" id="cartouchePuzzlePage">
+        <div id="cartoucheFunctionList" class="tool_container_tan">
+          <div class="add_circle func_label">&nbsp;</div>
+          <div class="subtract_circle func_label">&nbsp;</div>
+          <div class="multiply_circle func_label">&nbsp;</div>
+          <div class="divide_circle func_label">&nbsp;</div>
+        </div>
+
+        <div id="status_bar"><span id="hint"></span> <span id="timer"></span></div>
+
+        <div id="cartouchePuzzleContainer">
+          <div id="canvas-wrap">
+            <div id="overlay">
+              <table id="overlay_table"></table>
+            </div>
+            <canvas id="canvas"></canvas>
+          </div>
+          <div id="notes_window" class="hide">
+            <div id="symbolic_solution">
+            </div>
+            <div id="current_solution">
+            </div>
+          </div>
+        </div>
+        <div id="cartoucheNumbersAndToolsContainer" class="tool_container_tan">
+
+          <div id="button_wrap" class="show">
+            <div id="numbers_buttons"><table id="numbers_buttons_table"></table></div>
+          </div>
+          <div id="cartoucheToolsContainer"  class="show">
+            <img src="js/game/img/undo.png" id="cartoucheToolUndo" class="cartoucheTools" />
+            <img src="js/game/img/redo.png" id="cartoucheToolRedo" class="cartoucheTools" />
+            <img src="js/game/img/eraser.png" id="cartoucheToolEraser" class="cartoucheTools" />
+            <img src="js/game/img/notes.png" id="cartoucheToolNotes" class="cartoucheTools" />
+            <img src="js/game/img/hint.png" id="cartoucheToolQuestion" class="cartoucheTools" />
+            <img src="js/game/img/restart.png" id="cartoucheToolRestart" class="cartoucheTools" />
+          </div>
+
+        </div>
+      </div>
+      <!-- Puzzle Page End -->
+
+    </ion-content>
+</ion-view>

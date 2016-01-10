@@ -1,0 +1,101 @@
+/* Operator toggle buttons */
+.operator_toggle{
+  background-repeat: no-repeat;
+  background-position: right;
+  width: 24%;
+  display: inline-block;
+}
+
+.operator_field {
+  background-color: white;
+  margin-bottom: .5rem;
+}
+
+/* START NEW APP DEFAULT COLORS */
+.colTurquoise {
+  background: #79cab4;
+  color: #fff;
+}
+.colWhite {
+  background: #ffffff;
+  color: #000000;
+}
+.colSand {
+  background: #ebdec8;
+}
+.colLightSand {
+  background: #f6f3ec;
+}
+.colSalmon {
+  background: #d17545;
+}
+.colBlue {
+  background: #465185;
+}
+.colPurple {
+  background: #8e58a4;
+}
+.colYellow {
+  background: #f8d63d;
+}
+/* END NEW APP DEFAULT COLORS */
+
+.cages_logo{
+  width: 65%;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  -webkit-border-top-left-radius: 6px;
+  -moz-border-radius-topleft: 6px;
+  border-top-left-radius: 6px;
+  -webkit-border-top-right-radius: 6px;
+  -moz-border-radius-topright: 6px;
+  border-top-right-radius: 6px;
+  -webkit-border-bottom-right-radius: 6px;
+  -moz-border-radius-bottomright: 6px;
+  border-bottom-right-radius: 6px;
+  -webkit-border-bottom-left-radius: 6px;
+  -moz-border-radius-bottomleft: 6px;
+  border-bottom-left-radius: 6px;
+  text-indent: 0;
+  display: block;
+  font-size: 24px;
+  font-weight: normal;
+  font-style: normal;
+  height: 50px;
+  line-height: 50px;
+  width: 65%;
+  text-decoration: none;
+  text-align: center;
+  text-shadow: none;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+}
+
+.my_settings form div{
+  background: #ebdec8;
+  margin: 4px;
+}
+
+.puzzleSizePageBtn-container{
+  margin: auto;
+  width:21rem;
+}
+
+.puzzleSizePageBtn {
+  display: inline-block;
+  margin: 1rem;
+  border-radius: 1.5rem;
+  height: 8rem;
+  width: 8rem;
+  font-family: 'OpenSans Regular', sans-serif;
+  font-size: 4rem;
+  text-align:center;
+  line-height: 8rem;
+  color:#fff;
+}
+
