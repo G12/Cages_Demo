@@ -1,6 +1,6 @@
 angular.module('app.controllers', [])
 
-.controller('cagesCtrl', function($scope) {
+.controller('homePageCtrl', function($scope) {
 
 })
 
@@ -9,6 +9,49 @@ angular.module('app.controllers', [])
 })
 
 .controller('puzzlesCtrl', function($scope) {
+
+})
+
+.controller('savedGameSelectionCtrl', function($scope, GameFactory, $stateParams) {
+
+  //////////////////////////////////////////   Saved Games List  ////////////////////////////////////////
+
+  $scope.saved_games_list = GameFactory.getSavedGamesList();
+
+  ///////////////////////////////////////////   Accordian  //////////////////////////////////////////////
+
+  /*
+   * if given group is the selected group, deselect it
+   * else, select the given group
+   */
+  $scope.toggleGroup = function(group) {
+    if ($scope.isGroupShown(group)) {
+      $scope.shownGroup = null;
+    } else {
+      $scope.shownGroup = group;
+    }
+  };
+
+  $scope.isGroupShown = function(group) {
+    return $scope.shownGroup === group;
+  };
+
+  ///////////////////////////////////////////   Item and URL functions ////////////////////////////
+
+  $scope.getNumberSetById = function(number_set_id)
+  {
+    var number_set = Game.numberSetById(number_set_id);
+    return number_set.set.toString();
+  };
+
+  $scope.bitMaskToString = function(bitmask)
+  {
+    return Math_ops.bitMaskToString(bitmask);
+  };
+
+  $scope.savedGame = function(){
+    GameFactory.setIsNewGame(false);
+  }
 
 })
 
@@ -103,6 +146,12 @@ angular.module('app.controllers', [])
       $scope.bitMask = Math_ops.toBitmask(op_set);
 
       return $scope.bitMask + "/" + $scope.current_selection_id + "/" + parseInt($stateParams.size) + "/" + $stateParams.id;
+    };
+
+    $scope.newGame = function()
+    {
+      GameFactory.setIsNewGame(true);
+      GameFactory.setIsRandomSolution(true);
     }
 
 })
@@ -112,17 +161,9 @@ angular.module('app.controllers', [])
 
 .controller('cagesPuzzleCtrl', function( $scope, $window, GameFactory, $stateParams) {
 
-  //if(!GameFactory.isGameOn())
-  //{
-  //GameFactory.startGame($window.innerHeight, $window.innerWidth, 4);
-  //}
-
-  //alert(JSON.stringify($stateParams));
-
-
   $scope.drawGame = function() {
       GameFactory.startGame($window.innerHeight, $window.innerWidth, $stateParams);
-  }
+  };
 
   angular.element($window).bind('resize', function(){
     $scope.$apply(function() {

@@ -1,0 +1,23 @@
+<ion-view title="Game Selection">
+    <ion-content overflow-scroll="true" padding="true" style="background: url(img/RzuOWWn4TeWoEUXSJddx_tan_background.jpg) no-repeat center;" class="has-header">
+      <ion-list>
+        <div ng-repeat="group in saved_games_list">
+          <ion-item class="item-stable"
+                    ng-click="toggleGroup(group)"
+                    ng-class="{active: isGroupShown(group)}">
+            <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
+            &nbsp; {{group.name}}
+          </ion-item>
+          <ion-item class="item-accordion"
+                    ng-repeat="item in group.list"
+                    ng-show="isGroupShown(group)">
+            <!--{{item.name}} &nbsp; id:{{item.id}} &nbsp; index:{{$index}}-->
+            <!--/cagesPuzzle/:bitMask/:numberSetId/:size/:id'-->
+            <a ng-click="savedGame()" href="#/cagesPuzzle/null/null/{{group.size}}/{{$index}}">{{item.name}}
+              using: {{getNumberSetById(item.number_set)}} and: <strong>{{bitMaskToString(item.bitMask)}}</strong> </a>
+
+          </ion-item>
+        </div>
+      </ion-list>
+    </ion-content>
+</ion-view>

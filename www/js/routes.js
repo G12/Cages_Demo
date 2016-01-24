@@ -8,10 +8,10 @@ angular.module('app.routes', [])
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-    .state('cages', {
+    .state('homePage', {
       url: '/homePage',
-      templateUrl: 'templates/Cages.html',
-      controller: 'cagesCtrl'
+      templateUrl: 'templates/HomePage.html',
+      controller: 'homePageCtrl'
     })
 
     .state('login', {
@@ -24,6 +24,12 @@ angular.module('app.routes', [])
       url: '/puzzleSizesPage',
       templateUrl: 'templates/puzzleSizes.html',
       controller: 'puzzlesCtrl'
+    })
+
+    .state('savedGameSelection', {
+      url: '/savedGameSelection',
+      templateUrl: 'templates/savedGameSelection.html',
+      controller: 'savedGameSelectionCtrl'
     })
 
     .state('gameSelection', {
@@ -45,7 +51,7 @@ angular.module('app.routes', [])
     })
 
     .state('cagesPuzzle', {
-      url: '/cagesPuzzle/:bitMask/:numberSetId/:size/:id/:isNew',
+      url: '/cagesPuzzle/:bitMask/:numberSetId/:size/:id',
       templateUrl: 'templates/CagesPuzzle.html',
       controller: 'cagesPuzzleCtrl'
     })

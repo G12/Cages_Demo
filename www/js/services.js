@@ -18,14 +18,6 @@ var currentGame = {
 
 //End of old globals
 
-//var str ='{"number_set":40,"key":"Zv9iA","solution":[[[1,null],[2,null],[4,null],[3,null]],[[4,null],[1,null],[3,null],[2,null]],[[2,null],[3,null],[1,null],[4,null]],[[3,null],[4,null],[2,null],[1,null]]],"operation_set":[],"c":[{"i":11,"t":0,"x":1,"y":0,"op":0,"rt":{"solutions":[[{"x":1,"y":0,"val":2},{"x":3,"y":1,"val":2}],[{"x":1,"y":0,"val":null},{"x":3,"y":1,"val":null}]],"eq":"((4*3)-2-2)"},"c":[{"i":0,"t":1,"x":2,"y":0,"op":3,"rt":{"solutions":[[{"x":2,"y":0,"val":4},{"x":3,"y":0,"val":3}],[{"x":2,"y":0,"val":null},{"x":3,"y":0,"val":null}]],"eq":"(4*3)"},"o":"C7_"}],"o":"CsX"},{"i":3,"t":0,"x":0,"y":0,"op":0,"rt":{"solutions":[[{"x":0,"y":0,"val":1}],[{"x":0,"y":0,"val":null}]],"eq":"((4*2)-1)"},"c":[{"i":1,"t":1,"x":0,"y":1,"op":3,"rt":{"solutions":[[{"x":0,"y":1,"val":4},{"x":0,"y":2,"val":2}],[{"x":0,"y":1,"val":null},{"x":0,"y":2,"val":null}]],"eq":"(4*2)"},"o":"Cd2"}],"o":"Bk"},{"i":20,"t":0,"x":1,"y":2,"op":3,"rt":{"solutions":[[{"x":0,"y":3,"val":3},{"x":2,"y":3,"val":2}],[{"x":0,"y":3,"val":null},{"x":2,"y":3,"val":null}]],"eq":"((3-4)*3*2)"},"c":[{"i":1,"t":1,"x":1,"y":2,"op":0,"rt":{"solutions":[[{"x":1,"y":2,"val":3},{"x":1,"y":3,"val":4}],[{"x":1,"y":2,"val":null},{"x":1,"y":3,"val":null}]],"eq":"(3-4)"},"o":"CvN"}],"o":"ChT"},{"i":0,"t":0,"x":1,"y":1,"op":3,"rt":{"solutions":[[{"x":1,"y":1,"val":1},{"x":2,"y":1,"val":3}],[{"x":1,"y":1,"val":null},{"x":2,"y":1,"val":null}]],"eq":"(1*3)"},"c":[],"o":"Ctx"},{"i":6,"t":0,"x":2,"y":2,"op":3,"rt":{"solutions":[[{"x":3,"y":3,"val":1}],[{"x":3,"y":3,"val":null}]],"eq":"((1-4)*1)"},"c":[{"i":0,"t":1,"x":2,"y":2,"op":0,"rt":{"solutions":[[{"x":2,"y":2,"val":1},{"x":3,"y":2,"val":4}],[{"x":2,"y":2,"val":null},{"x":3,"y":2,"val":null}]],"eq":"(1-4)"},"o":"C.I"}],"o":"CF"}],"current_notes":null,"bitMask":0}';
-//var obj = JSON.parse(str);
-
-//var json = save_game_sample; // sample;
-var json = template5x5[0];
-json.key = null;
-json.size = 5;
-
 angular.module('app.services', [])
 
 .factory('GameFactory', ['$localStorage','$timeout', function($localStorage, $timeout){
@@ -52,7 +44,37 @@ angular.module('app.services', [])
     return null;
   }
 
-
+  function getSavedGamesList(size)
+  {
+    current_size = size;
+    switch(size)
+    {
+      case 4:
+        if(!fours.length)
+        {
+          fours = $localStorage.fours || [];
+        }
+        return fours;
+      case 5:
+        if(!fives.length)
+        {
+          fives = $localStorage.fives || [];
+        }
+        return fours;
+      case 6:
+        if(!sixes.length)
+        {
+          sixes = $localStorage.sixes || [];
+        }
+        return sixes;
+      case 7:
+        if(!sevens.length)
+        {
+          sevens = $localStorage.sevens || [];
+        }
+        return sevens;
+    }
+  }
 
   //Constants
 
@@ -62,8 +84,6 @@ angular.module('app.services', [])
   var MAX_TOOL_BAR_HEIGHT = 52;
   var BAR_RATIO = 0.18;
 
-  var isGameOn = false;
-  var status = "uninitialized";
   //One time initialization
 
   cvm.box.init();
@@ -90,16 +110,53 @@ angular.module('app.services', [])
     }
   ];
 
-  var saved_games = [];
-  var current_saved_game_index = null;
-  if($localStorage.savedGames)
-  {
-    saved_games = $localStorage.savedGames;
-  }
+  //Current Game data
+  var fours = [];
+  var fives = [];
+  var sixes = [];
+  var sevens = [];
+
+  var current_index;
+  var current_size;
+  var current_template_name;
+  var is_new_game = false;
+  var is_random_solution = false;
+
+  var saved_games_list = [
+    {name:"4x4 Puzzles", list:[], size:4},
+    {name:"5x5 Puzzles", list:[], size:5},
+    {name:"6x6 Puzzles", list:[], size:6},
+    {name:"7x7 Puzzles", list:[], size:7}
+  ];
 
   return {
     //Current saved game or games
+    setIsNewGame: function(state)
+    {
+      is_new_game = state;
+    },
+    setIsRandomSolution: function(state)
+    {
+      is_random_solution = state;
+    },
+    setCurrentSize: function(size)
+    {
+      current_size = size;
+    },
+    setCurrentTemplateName: function(name)
+    {
+      current_template_name = name;
+    },
+    //Saved Game functions
+    getSavedGamesList: function()
+    {
+      saved_games_list[0].list = getSavedGamesList(4);
+      saved_games_list[1].list = getSavedGamesList(5);
+      saved_games_list[2].list = getSavedGamesList(6);
+      saved_games_list[3].list = getSavedGamesList(7);
 
+      return saved_games_list;
+    },
     //Game selection functions
     getTemplateList: function(size)
     {
@@ -117,26 +174,63 @@ angular.module('app.services', [])
     {
       $timeout(function() {
 
-        //Save to the current game
-        $localStorage.currentJson = json;
-        //console.log("SAVED JSON: " + JSON.stringify(json));
-        //alert("Save Game");
+        switch(current_size) {
+          case 4:
+            if(is_new_game)
+            {
+
+              current_index = fours.length;
+              is_new_game = false;
+              fours.push(json);
+            }
+            else
+            {
+              fours[current_index] = json;
+            }
+            $localStorage.fours = fours;
+            break;
+          case 5:
+            if(is_new_game)
+            {
+              current_index = fives.length;
+              is_new_game = false;
+              fives.push(json);
+            }
+            else
+            {
+              fives[current_index] = json;
+            }
+            $localStorage.fives = fives;
+            break;
+          case 6:
+            if(is_new_game)
+            {
+              current_index = sixes.length;
+              is_new_game = false;
+              sixes.push(json);
+            }
+            else
+            {
+              sixes[current_index] = json;
+            }
+            $localStorage.sixes = sixes;
+            break;
+          case 7:
+            if(is_new_game)
+            {
+              current_index = sevens.length;
+              is_new_game = false;
+              sevens.push(json);
+            }
+            else
+            {
+              sevens[current_index] = json;
+            }
+            $localStorage.sevens = sevens;
+            break;
+        }
+
       }, 0);
-      if(isGameOn)
-      {
-        status = "Game is ON";
-      }
-      else{
-        status = "Game is OFF";
-      }
-    },
-    isGameOn: function()
-    {
-      return isGameOn;
-    },
-    getStatus: function()
-    {
-      return status;
     },
     drawTemplatePreview: function(height, width, params, number_set_id, bitMask)
     {
@@ -193,28 +287,23 @@ angular.module('app.services', [])
     },
     startGame: function(height, width, params)
     {
+      var json = null;
+
+      //Adjust the rendering of Game
       GameEvents.HEIGHT_ADJUSTMENT = 5; //3 is default
       //GameEvents.DROP_MAX = .78; // default .8
 
-      isGameOn = false;
       //TODO work out timer issues and initial setup
-      if(!isGameOn)
-      {
-        //Clear local storage for current game
-        delete $localStorage.currentJson;
 
-        //cvm.box.init();
-        //PermutationTable.init(6);
-        //g_number_sets = number_sets_json; //See saved_number_sets.js
+      //cvm.box.init();
+      //PermutationTable.init(6);
+      //g_number_sets = number_sets_json; //See saved_number_sets.js
 
-        var d = $("#timer");
-        //Create the stopwatch
-        currentGame.time = new Stopwatch(d[0], {delay: 1000});
+      var d = $("#timer");
+      //Create the stopwatch
+      currentGame.time = new Stopwatch(d[0], {delay: 1000});
 
-        GameEvents.startTimer();
-
-        isGameOn = true;
-      }
+      GameEvents.startTimer();
 
       GameEvents.loadJQueryEvents();
 
@@ -224,7 +313,7 @@ angular.module('app.services', [])
 
       //Begin page set up
 
-      var size = parseInt(params.size);
+      current_size = parseInt(params.size);
 
       //Subtract the header bar height
       height = height - ION_HEADER_BAR_HEIGHT;
@@ -232,7 +321,7 @@ angular.module('app.services', [])
       var cartoucheFunctionListHeight = $("#cartoucheFunctionList").height();
       $("#status_bar").height(cartoucheFunctionListHeight);
 
-      var toolBarHeight = width/(size+1); MIN_TOOLBAR_HEIGHT;
+      var toolBarHeight = width/(current_size+1); MIN_TOOLBAR_HEIGHT;
 
       if(2*toolBarHeight/height < BAR_RATIO)
       {
@@ -275,40 +364,38 @@ angular.module('app.services', [])
       //Finished with page setup
 
       //TODO determine if this is a new game
-      if(params.isNew === "y") //If this is a new game get template
+      if(params.numberSetId != "null") //is_new_game) //If this is a new game get template
       {
-        var template = getTemplateForSizeAndId(size, parseInt(params.id));
+        var template = getTemplateForSizeAndId(current_size, parseInt(params.id));
         if(template)
         {
           json = template;
           json.number_set = params.numberSetId;
           json.bitMask = params.bitMask;
-
-          //New game starting deal with old
-          delete $localStorage.currentJson;
+          if(is_random_solution)
+          {
+            json.key = Game.generateKey(current_size);
+            delete json.size;
+          }
+          //generate random operation configuration
+          json.operation_flags = CONST.OP_RANDOM | CONST.OP_SUPRESS_DUPLICATES;
         }
         else
         {
-          alert("Could not find template for size: " + size + " and id: " + params.id);
+          alert("Could not find template for size: " + current_size + " and id: " + params.id);
           return;
         }
       }
-
-      if($localStorage.currentJson)
-      {
-        json = $localStorage.currentJson;
-        json.operation_flags = CONST.OP_STATIC;
-      }
       else
       {
-        //Test Random generation
-        if(!json.key)
-        {
-          json.key = Game.generateKey(json.size);
-          delete json.size;
-        }
-        //generate random operation configuration
-        json.operation_flags = CONST.OP_RANDOM | CONST.OP_SUPRESS_DUPLICATES;
+        //get game from local storage
+        var gameList = getSavedGamesList(current_size);
+        current_index = parseInt(params.id);
+        json = gameList[current_index];
+
+        json.operation_flags = CONST.OP_STATIC;
+        //alert("Saved game not implemented");
+        //return;
       }
 
       //Start auto saving saving game after initial draw?
@@ -319,10 +406,8 @@ angular.module('app.services', [])
       GameEvents.drawPage(json);
 
       //After the game has been drawn and processed save
-      if(!$localStorage.currentJson)
-      {
-        GameEvents.saveGame(CONST.G_SAVE_GAME, false);
-      }
+      GameEvents.saveGame(CONST.G_SAVE_GAME, false);
+
     }
   };
 

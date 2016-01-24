@@ -27,21 +27,29 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
 
   });
 
-  //This event is called when the gameSelection page is called
+
+  /**
+  The $stateChangeStart event gives you acces to the toState and fromState objects.
+  These state objects will contain the configuration properties.
+
+  See https://github.com/angular-ui/ui-router/wiki#state-change-events
+
+   **/
   $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
+
+    //This event is called when the gameSelection page is called
     if(toState.name === "gameSelection")
     {
-      //alert("Is Game On: " + GameFactory.isGameOn());
+      //console.log("gameSelection page called");
     }
   });
 
   $ionicPlatform.on('resume', function(){
-    alert("On Resume status: " + GameFactory.getStatus());
+    //console.log("$ionicPlatform.on('resume', function()");
   });
 
   $ionicPlatform.on('pause', function(){
     //alert("Pause");
-    //GameFactory.saveCurrentGame();
   });
 
 })
