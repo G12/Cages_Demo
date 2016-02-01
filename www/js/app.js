@@ -7,13 +7,20 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services', 'app.directives', 'ngStorage'])
 
-.run(function($ionicPlatform, $rootScope, GameFactory) {
+.run(function($ionicPlatform, $rootScope, GameFactory, $window) {
   $ionicPlatform.ready(function() {
+
+    if(!window.cordova)
+    {
+      $("#app_container_div").addClass("app_container_size");
+    }
+
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
+
     if(window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();

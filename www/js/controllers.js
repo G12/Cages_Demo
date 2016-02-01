@@ -165,11 +165,12 @@ angular.module('app.controllers', [])
       GameFactory.startGame($window.innerHeight, $window.innerWidth, $stateParams);
   };
 
-  angular.element($window).bind('resize', function(){
-    $scope.$apply(function() {
-      $scope.drawGame();
-    })
-  });
+  //TODO possible resize algorythm
+  //angular.element($window).bind('resize', function(){
+  //  $scope.$apply(function() {
+  //    $scope.drawGame();
+  //  })
+  //});
 
   $scope.drawGame();
 

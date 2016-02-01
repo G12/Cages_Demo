@@ -287,6 +287,11 @@ angular.module('app.services', [])
     },
     startGame: function(height, width, params)
     {
+      if(!window.cordova) {
+        height = 734;
+        width = 439;
+      }
+
       var json = null;
 
       //Adjust the rendering of Game
