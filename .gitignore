@@ -2,8 +2,12 @@
 # http://git-scm.com/docs/gitignore
 
 node_modules/
+
+hooks/
 platforms/
+resources/
 plugins/
+
 .idea/
 www/lib/
 www/js/game/
