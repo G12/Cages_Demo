@@ -303,7 +303,7 @@ angular.module('app.services', [])
       //Create the stopwatch
       currentGame.time = new Stopwatch(d[0], {delay: 1000});
 
-      GameEvents.startTimer();
+      GameEvents.startTimer(0);
 
       GameEvents.loadJQueryEvents();
 
