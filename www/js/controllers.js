@@ -159,7 +159,12 @@ angular.module('app.controllers', [])
 
   })
 
-.controller('cagesPuzzleCtrl', function( $scope, $window, GameFactory, $stateParams) {
+.controller('cagesPuzzleCtrl', function( $scope, $window, GameFactory, $stateParams, $state) {
+
+  $scope.goToHomePage = function()
+  {
+    $state.go("homePage");
+  };
 
   $scope.drawGame = function() {
       GameFactory.startGame($window.innerHeight, $window.innerWidth, $stateParams);

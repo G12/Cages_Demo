@@ -12,3 +12,6 @@ plugins/
 www/lib/
 www/js/game/
 
+# DW Dreamweaver added files
+_notes
+dwsync.xml
