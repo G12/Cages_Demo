@@ -1,6 +1,10 @@
 <ion-view title="Game Selection">
-    <ion-content overflow-scroll="true" padding="true" style="background: url(img/RzuOWWn4TeWoEUXSJddx_tan_background.jpg) no-repeat center;" class="has-header">
-      <ion-list>
+
+  <ion-content overflow-scroll="true" padding="true" style="background: url(img/RzuOWWn4TeWoEUXSJddx_tan_background.jpg) no-repeat center;" class="has-header">
+
+    <ion-toggle ng-model="editMode" toggle-class="toggle-assertive">Edit Mode</ion-toggle>
+
+    <ion-list>
         <div ng-repeat="group in saved_games_list">
           <ion-item class="item-stable"
                     ng-click="toggleGroup(group)"
@@ -11,11 +15,21 @@
           <ion-item class="item-accordion"
                     ng-repeat="item in group.list"
                     ng-show="isGroupShown(group)">
-            <!--{{item.name}} &nbsp; id:{{item.id}} &nbsp; index:{{$index}}-->
-            <!--/cagesPuzzle/:bitMask/:numberSetId/:size/:id'-->
-            <a ng-click="savedGame()" href="#/cagesPuzzle/null/null/{{group.size}}/{{$index}}">{{item.name}}
-              using: {{getNumberSetById(item.number_set)}} and: <strong>{{bitMaskToString(item.bitMask)}}</strong> </a>
-
+            <div class="item item-button-right">
+              <a on-hold="editMode?onHold():''" class="game_selection_item" ng-click="savedGame()" href="#/cagesPuzzle/null/null/{{group.size}}/{{$index}}">
+                <h2>{{item.name}}</h2>
+                <div>
+                  <span ng-show="testBitmask('add', item.bitMask)" class="add_circle operator_icon"></span>
+                  <span ng-show="testBitmask('subtract', item.bitMask)" class="subtract_circle operator_icon"></span>
+                  <span ng-show="testBitmask('multiply', item.bitMask)" class="multiply_circle operator_icon"></span>
+                  <span ng-show="testBitmask('divide', item.bitMask)" class="divide_circle operator_icon"></span>
+                  <span>using: {{getNumberSetById(item.number_set)}}</span>
+                </div>
+              </a>
+              <button ng-show="editMode" ng-click="deleteSavedGame($index, group.size, item.name)" class="button button-assertive">
+                <i class="icon ion-close-circled"></i>
+              </button>
+            </div>
           </ion-item>
         </div>
       </ion-list>

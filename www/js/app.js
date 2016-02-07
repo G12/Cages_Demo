@@ -10,6 +10,13 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
 .run(function($ionicPlatform, $rootScope, GameFactory, $window) {
   $ionicPlatform.ready(function() {
 
+    //Set the callback function used for saving
+    //Note put at top to make sur it is called
+    //TODO research why this is so
+    GameEvents.setSaveCallback(function (json, scope, gameCompleted) {
+      GameFactory.saveGame(json, scope, gameCompleted);
+    });
+
     if(!window.cordova)
     {
       $("#app_container_div").addClass("app_container_size");
@@ -25,12 +32,6 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-
-    GameEvents.setSaveCallback(function (json, scope, gameCompleted) {
-
-      GameFactory.saveGame(json, scope, gameCompleted);
-
-    });
 
   });
 

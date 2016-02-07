@@ -14,6 +14,8 @@ angular.module('app.controllers', [])
 
 .controller('savedGameSelectionCtrl', function($scope, GameFactory, $stateParams) {
 
+  $scope.editMode = false;
+
   //////////////////////////////////////////   Saved Games List  ////////////////////////////////////////
 
   $scope.saved_games_list = GameFactory.getSavedGamesList();
@@ -38,15 +40,38 @@ angular.module('app.controllers', [])
 
   ///////////////////////////////////////////   Item and URL functions ////////////////////////////
 
+  $scope.onHold = function()
+  {
+    alert("I'm Holding");
+  },
+  $scope.deleteSavedGame = function(index, size, name)
+  {
+    GameFactory.deleteGame(index, size);
+  };
+
   $scope.getNumberSetById = function(number_set_id)
   {
+    //TODO determine why this is called so often and why
+    //number_set_id is the entire number_set object
     var number_set = Game.numberSetById(number_set_id);
-    return number_set.set.toString();
+    if(number_set)
+    {
+      return number_set.set.toString();
+    }
+    else
+    {
+      return "";
+    }
   };
 
   $scope.bitMaskToString = function(bitmask)
   {
     return Math_ops.bitMaskToString(bitmask);
+  };
+
+  $scope.testBitmask = function(operation_name, bit_mask)
+  {
+    return Math_ops.testBitmask(operation_name, bit_mask);
   };
 
   $scope.savedGame = function(){
@@ -55,7 +80,12 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('gameSelectionCtrl', function($scope, GameFactory, $stateParams) {
+.controller('gameSelectionCtrl', function($scope, GameFactory, $stateParams, $state) {
+
+  $scope.goToHomePage = function()
+  {
+    $state.go("homePage");
+  };
 
   $scope.size = $stateParams.size;
   //////////////////////////////////////////   Template List  ////////////////////////////////////////
@@ -66,17 +96,52 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('gameConfigurationCtrl', function($scope, $window, GameFactory, $stateParams) {
+.controller('gameConfigurationCtrl', function($scope, $window, GameFactory, $stateParams, $state) {
 
-    ////////////////////////////////////  Operator Check Box list
+  $scope.goToHomePage = function()
+  {
+    $state.go("homePage");
+  };
+
+  ////////////////////////////////////  Operator Check Box list
     //operator checkbox model
     $scope.bitMask = 15;
+
+    //Set up check boxes
+    $scope.chkDisabled = false;
+    $scope.disableReason = "(minimum of two)";
     $scope.operator = {add:false, subtract:false, multiply:false, divide:false};
+    var settings = GameFactory.getSettings();
+    if(settings.randomOperators != true)
+    {
+      $scope.disableReason = "(Randomize... Operators is Disabled)";
+      $scope.chkDisabled = true;
+      var template = GameFactory.getTemplate(parseInt($stateParams.size), parseInt($stateParams.id));
+      $scope.operator.add = Math_ops.testBitmask("add", template.bitMask);
+      $scope.operator.subtract = Math_ops.testBitmask("subtract", template.bitMask);
+      $scope.operator.multiply = Math_ops.testBitmask("multiply", template.bitMask);
+      $scope.operator.divide = Math_ops.testBitmask("divide", template.bitMask);
+
+    }
+
+    $scope.checkBoxChanged = function(operator)
+    {
+      alert("operator value = " + operator);
+    }
 
     $scope.getOperatorStatus = function()
     {
+      //Minimum of 2 operators
+      var count = 0;
+      count = $scope.operator.add ? count + 1 : count;
+      count = $scope.operator.subtract ? count + 1 : count;
+      count = $scope.operator.multiply ? count + 1 : count;
+      count = $scope.operator.divide ? count + 1 : count;
+
+      if(count < 2) return false;
+
       return $scope.operator.add || $scope.operator.subtract || $scope.operator.multiply || $scope.operator.divide;
-    }
+    };
 
     ////////////////////////////////////  Number set selection list
     $scope.number_set_items = [];
@@ -159,25 +224,28 @@ angular.module('app.controllers', [])
 
   })
 
-.controller('cagesPuzzleCtrl', function( $scope, $window, GameFactory, $stateParams, $state) {
+.controller('cagesPuzzleCtrl', function( $scope, $window, GameFactory, $stateParams, $state, $timeout) {
 
   $scope.goToHomePage = function()
   {
     $state.go("homePage");
   };
 
-  $scope.drawGame = function() {
-      GameFactory.startGame($window.innerHeight, $window.innerWidth, $stateParams);
-  };
-
   //TODO possible resize algorythm
   //angular.element($window).bind('resize', function(){
   //  $scope.$apply(function() {
-  //    $scope.drawGame();
+  //  GameFactory.startGame($window.innerHeight, $window.innerWidth, $stateParams);
   //  })
   //});
 
-  $scope.drawGame();
+  //See routes.js - Must set cache false so that Game will always be rendered
+  //Also put on timeout que so that rendering does no start till
+  //page is showing
+  $timeout(function()
+  {
+    GameFactory.startGame($window.innerHeight, $window.innerWidth, $stateParams);
+  },0);
+
 
 })
 
@@ -185,17 +253,26 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('settingsCtrl', function($scope) {
+.controller('settingsCtrl', function($scope, GameFactory)
+{
 
-  $scope.items = {smartNotes:false,
-    smartButtons:false,
-    showTimer:false,
-    padMode:false,
-    alternativeInput:true
-  };
+  $scope.items = GameFactory.getSettings();
+
   $scope.toggleChanged = function(item)
   {
-    alert("item = " + JSON.stringify(item) + " $scope.items " + JSON.stringify($scope.items));
+    if($scope.items.randomOperators != true)
+    {
+      if($scope.items.noNegativeResults)
+      {
+          $scope.items.noNegativeResults = false;
+      }
+      $scope.items.noNegativeResults = false;
+    }
+    if($scope.items.noNegativeResults)
+    {
+      $scope.items.sortDescending = true;
+    }
+    GameFactory.updateSettings($scope.items);
   }
 })
 

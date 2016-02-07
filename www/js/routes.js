@@ -50,7 +50,9 @@ angular.module('app.routes', [])
       controller: 'puzzleNameCtrl'
     })
 
+    //Must set cache false so that Game will always be rendered
     .state('cagesPuzzle', {
+      cache: false,
       url: '/cagesPuzzle/:bitMask/:numberSetId/:size/:id',
       templateUrl: 'templates/CagesPuzzle.html',
       controller: 'cagesPuzzleCtrl'

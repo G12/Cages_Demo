@@ -1,15 +1,22 @@
 <ion-view title="Game Configuration">
-    <ion-content overflow-scroll="true" padding="true" style="background: url(img/RzuOWWn4TeWoEUXSJddx_tan_background.jpg) no-repeat center;" class="has-header">
+
+  <ion-nav-buttons side="secondary">
+    <button class="button" ng-click="goToHomePage()">
+      <i class="icon ion-ios-home-outline"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content overflow-scroll="true" padding="true" style="background: url(img/RzuOWWn4TeWoEUXSJddx_tan_background.jpg) no-repeat center;" class="has-header">
 
       <div class="operator_field" id="operator_set">
         <div class="item item-divider">
-          Select Operator Set
+          Select Operator Set <span class="game-comment">{{disableReason}}</span>
         </div>
         <div>
-          <ion-checkbox ng-model="operator.add" class="add_circle operator_toggle"></ion-checkbox>
-          <ion-checkbox ng-model="operator.subtract" class="subtract_circle operator_toggle"></ion-checkbox>
-          <ion-checkbox ng-model="operator.multiply" class="multiply_circle operator_toggle"></ion-checkbox>
-          <ion-checkbox ng-model="operator.divide" class="divide_circle operator_toggle"></ion-checkbox>
+          <ion-checkbox ng-model="operator.add" class="add_circle operator_toggle" ng-disabled="chkDisabled"></ion-checkbox>
+          <ion-checkbox ng-model="operator.subtract" class="subtract_circle operator_toggle" ng-disabled="chkDisabled"></ion-checkbox>
+          <ion-checkbox ng-model="operator.multiply" class="multiply_circle operator_toggle" ng-disabled="chkDisabled"></ion-checkbox>
+          <ion-checkbox ng-model="operator.divide" class="divide_circle operator_toggle" ng-disabled="chkDisabled"></ion-checkbox>
         </div>
       </div>
 
@@ -25,17 +32,6 @@
           </label>
         </div>
       </div>
-
-      <!--
-      <div>
-        <div id="canvas-wrap">
-          <div id="overlay">
-            <table id="overlay_table"></table>
-          </div>
-          <canvas id="canvas"></canvas>
-        </div>
-      </div>
-      -->
 
       <a ng-click="newGame()" ng-show="current_selection_id" id="play_button" href="#/cagesPuzzle/{{makeParams()}}" class="btn colTurquoise ">Play</a>
 

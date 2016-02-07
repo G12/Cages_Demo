@@ -1,28 +1,36 @@
 <ion-view title="Settings" class="my_settings">
     <ion-content overflow-scroll="true" padding="true" class="has-header">
-        <h4>GAME TOOLS</h4>
-        <form class="list">
-            <ion-toggle ng-model="items.smartNotes" ng-change="toggleChanged(items.smartNotes)" toggle-class="toggle-balanced" name="smartNotes">Smart Notes</ion-toggle>
-        </form>
-        <div>
-            <p>Notes will disappear once they have become impossible due to placed numbers</p>
-        </div>
-        <form class="list">
-            <ion-toggle ng-model="items.smartButtons" ng-change="toggleChanged(items.smartButtons)" toggle-class="toggle-balanced" name="smartButtons">Smart Buttons</ion-toggle>
-        </form>
-        <div>
-            <p>Notes will disappear once they have become impossible due to placed numbers</p>
-        </div>
-        <h4>FEATURES</h4>
-        <form class="list">
-            <ion-toggle ng-model="items.showTimer" ng-change="toggleChanged(items.showTimer)" toggle-class="toggle-balanced" name="showTimer">Show Timer</ion-toggle>
-            <ion-toggle ng-model="items.padMode" ng-change="toggleChanged(items.padMode)" toggle-class="toggle-balanced" name="padMode">Pad Mode</ion-toggle>
-        </form>
-        <div>
-            <p>Tap and hold puzzle square for number pad</p>
-        </div>
-        <form class="list">
-            <ion-toggle ng-model="items.alternativeInput" ng-change="toggleChanged(items.alternativeInput)" toggle-class="toggle-balanced" ng-checked="true" name="alternativeInput">Alternative Input Mode</ion-toggle>
-        </form>
+      <h4>GAME TOOLS</h4>
+      <form class="list">
+        <ion-toggle ng-model="items.randomOperators" ng-change="toggleChanged(items.randomOperators)" toggle-class="toggle-balanced" name="randomOperators">Randomize Cage Operators</ion-toggle>
+      </form>
+      <div>
+        <p>Operator types for cages will be randomly generated.<br>
+        <strong>Note: </strong>If this option is not selected the No Negative Results option is not available.</p>
+      </div>
+      <form class="list">
+          <ion-toggle ng-disabled="!items.randomOperators" ng-model="items.noNegativeResults" ng-change="toggleChanged(items.noNegativeResults)" toggle-class="toggle-balanced" name="noNegativeResults">No Negative Results</ion-toggle>
+      </form>
+      <div>
+          <p>Simple numeric operations will never return negative results.<br>
+          <strong>Note: </strong>Sort in Descending Order is mandatory when this value is set.</p>
+      </div>
+      <form class="list">
+          <ion-toggle ng-model="items.sortDescending" ng-change="toggleChanged(items.sortDescending)" toggle-class="toggle-balanced" name="sortDescending">Sort in Descending Order</ion-toggle>
+      </form>
+      <div>
+          <p>Simple numeric values will be sorted in descending order when composing the equation for non commutative operations.</p>
+      </div>
+      <h4>FEATURES</h4>
+      <form class="list">
+          <ion-toggle ng-model="items.showTimer" ng-change="toggleChanged(items.showTimer)" toggle-class="toggle-balanced" name="showTimer">Show Timer</ion-toggle>
+          <ion-toggle ng-model="items.padMode" ng-change="toggleChanged(items.padMode)" toggle-class="toggle-balanced" name="padMode">Pad Mode</ion-toggle>
+      </form>
+      <div>
+          <p>Tap and hold puzzle square for number pad</p>
+      </div>
+      <form class="list">
+          <ion-toggle ng-model="items.alternativeInput" ng-change="toggleChanged(items.alternativeInput)" toggle-class="toggle-balanced" ng-checked="true" name="alternativeInput">Alternative Input Mode</ion-toggle>
+      </form>
     </ion-content>
 </ion-view>

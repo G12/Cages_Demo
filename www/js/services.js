@@ -46,7 +46,6 @@ angular.module('app.services', [])
 
   function getSavedGamesList(size)
   {
-    current_size = size;
     switch(size)
     {
       case 4:
@@ -60,7 +59,7 @@ angular.module('app.services', [])
         {
           fives = $localStorage.fives || [];
         }
-        return fours;
+        return fives;
       case 6:
         if(!sixes.length)
         {
@@ -129,7 +128,37 @@ angular.module('app.services', [])
     {name:"7x7 Puzzles", list:[], size:7}
   ];
 
+  //Settings data
+  //json.operation_flags = CONST.OP_RANDOM | CONST.OP_SUPRESS_DUPLICATES | CONST.OP_NO_NEGATIVES | CONST.OP_SORT_DESCENDING;
+
+  var settings =
+  {
+    randomOperators:true,
+    noNegativeResults:true,
+    //Note when noNegativeResults is true sortDescending must be true
+    //The user interface should handle this rule
+    sortDescending:true,
+    showTimer:false,
+    padMode:false,
+    alternativeInput:true
+  };
+
+
   return {
+    //Game settings
+    getSettings: function()
+    {
+      if($localStorage.Settings)
+      {
+        settings = $localStorage.Settings;
+      }
+      return settings;
+    },
+    updateSettings: function(settings)
+    {
+      $localStorage.Settings = settings;
+    },
+
     //Current saved game or games
     setIsNewGame: function(state)
     {
@@ -154,8 +183,30 @@ angular.module('app.services', [])
       saved_games_list[1].list = getSavedGamesList(5);
       saved_games_list[2].list = getSavedGamesList(6);
       saved_games_list[3].list = getSavedGamesList(7);
-
       return saved_games_list;
+    },
+    //Remove a saved game from local storage
+    deleteGame: function(index, size)
+    {
+      switch(size)
+      {
+        case 4:
+          fours.splice(index,1);
+          $localStorage.fours = fours;
+          break;
+        case 5:
+          fives.splice(index,1);
+          $localStorage.fives = fives;
+          break;
+        case 6:
+          sixes.splice(index,1);
+          $localStorage.sixes = sixes;
+          break;
+        case 7:
+          sevens.splice(index,1);
+          $localStorage.sevens = sevens;
+          break;
+      }
     },
     //Game selection functions
     getTemplateList: function(size)
@@ -168,6 +219,10 @@ angular.module('app.services', [])
       }
       return null;
     },
+    getTemplate: function(size, id)
+    {
+      return getTemplateForSizeAndId(size, id);
+    },
     //Game play functions
     //This is the SaveGame callback
     saveGame: function(json, scope, gameCompleted)
@@ -178,7 +233,6 @@ angular.module('app.services', [])
           case 4:
             if(is_new_game)
             {
-
               current_index = fours.length;
               is_new_game = false;
               fours.push(json);
@@ -229,7 +283,6 @@ angular.module('app.services', [])
             $localStorage.sevens = sevens;
             break;
         }
-
       }, 0);
     },
     drawTemplatePreview: function(height, width, params, number_set_id, bitMask)
@@ -376,14 +429,29 @@ angular.module('app.services', [])
         {
           json = template;
           json.number_set = params.numberSetId;
-          json.bitMask = params.bitMask;
+
           if(is_random_solution)
           {
             json.key = Game.generateKey(current_size);
             delete json.size;
           }
-          //generate random operation configuration
-          json.operation_flags = CONST.OP_RANDOM | CONST.OP_SUPRESS_DUPLICATES;
+
+          var flags = 0;
+          if(settings.randomOperators)
+          {
+            json.bitMask = params.bitMask;
+            flags = flags | CONST.OP_RANDOM;
+          }
+          if(settings.noNegativeResults)
+          {
+            flags = flags | CONST.OP_NO_NEGATIVES | CONST.OP_SORT_DESCENDING;
+          }
+          if(settings.sortDescending)
+          {
+            flags = flags | CONST.OP_SORT_DESCENDING;
+          }
+          json.operation_flags = flags;
+
         }
         else
         {
@@ -397,10 +465,7 @@ angular.module('app.services', [])
         var gameList = getSavedGamesList(current_size);
         current_index = parseInt(params.id);
         json = gameList[current_index];
-
         json.operation_flags = CONST.OP_STATIC;
-        //alert("Saved game not implemented");
-        //return;
       }
 
       //Start auto saving saving game after initial draw?
