@@ -38,6 +38,7 @@ angular.module('app.routes', [])
       controller: 'gameSelectionCtrl'
     })
 
+    //TODO check alternative to setting cache false so that changes in settings will take affect
     .state('gameConfiguration', {
       url: '/gameConfiguration/:size/:id',
       templateUrl: 'templates/gameConfiguration.html',

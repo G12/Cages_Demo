@@ -16,6 +16,12 @@
           <strong>Note: </strong>Sort in Descending Order is mandatory when this value is set.</p>
       </div>
       <form class="list">
+        <ion-toggle ng-disabled="!items.randomOperators" ng-model="items.noFractions" ng-change="toggleChanged(items.noFractions)" toggle-class="toggle-balanced" name="noFractions">No Fractions</ion-toggle>
+      </form>
+      <div>
+        <p>Simple numeric division will display Whole result with Remainder.</p>
+      </div>
+      <form class="list">
           <ion-toggle ng-model="items.sortDescending" ng-change="toggleChanged(items.sortDescending)" toggle-class="toggle-balanced" name="sortDescending">Sort in Descending Order</ion-toggle>
       </form>
       <div>

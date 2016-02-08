@@ -135,6 +135,7 @@ angular.module('app.services', [])
   {
     randomOperators:true,
     noNegativeResults:true,
+    noFractions:true,
     //Note when noNegativeResults is true sortDescending must be true
     //The user interface should handle this rule
     sortDescending:true,
@@ -446,6 +447,10 @@ angular.module('app.services', [])
           {
             flags = flags | CONST.OP_NO_NEGATIVES | CONST.OP_SORT_DESCENDING;
           }
+          if(settings.noFractions)
+          {
+            flags = flags | CONST.OP_NO_FRACTIONS;
+          }
           if(settings.sortDescending)
           {
             flags = flags | CONST.OP_SORT_DESCENDING;
@@ -465,7 +470,14 @@ angular.module('app.services', [])
         var gameList = getSavedGamesList(current_size);
         current_index = parseInt(params.id);
         json = gameList[current_index];
-        json.operation_flags = CONST.OP_STATIC;
+
+        flags = 0; //CONST.OP_STATIC
+        if(settings.noFractions)
+        {
+          flags = flags | CONST.OP_NO_FRACTIONS;
+        }
+        json.operation_flags = flags;
+
       }
 
       //Start auto saving saving game after initial draw?
