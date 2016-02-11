@@ -490,6 +490,8 @@ angular.module('app.services', [])
       //After the game has been drawn and processed save
       GameEvents.saveGame(CONST.G_SAVE_GAME, false);
 
+      return json;
+
     }
   };
 

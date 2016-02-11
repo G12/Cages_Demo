@@ -9,10 +9,10 @@
   <ion-content overflow-scroll="true" padding="true" class="has-header">
       <div data-role="page" id="cartouchePuzzlePage">
         <div id="cartoucheFunctionList" class="tool_container_tan">
-          <div class="add_circle func_label">&nbsp;</div>
-          <div class="subtract_circle func_label">&nbsp;</div>
-          <div class="multiply_circle func_label">&nbsp;</div>
-          <div class="divide_circle func_label">&nbsp;</div>
+          <div ng-show="showAdd" class="add_circle func_label">&nbsp;</div>
+          <div ng-show="showSubtract" class="subtract_circle func_label">&nbsp;</div>
+          <div ng-show="showMultiply" class="multiply_circle func_label">&nbsp;</div>
+          <div ng-show="showDivide" class="divide_circle func_label">&nbsp;</div>
         </div>
 
         <div id="status_bar"><span id="hint"></span> <span id="timer"></span></div>
