@@ -226,13 +226,6 @@ angular.module('app.controllers', [])
 
 .controller('cagesPuzzleCtrl', function( $scope, $window, GameFactory, $stateParams, $state, $timeout) {
 
-  $scope.bitMask;
-
-  $scope.showAdd = true;
-  $scope.showSubtract = true;
-  $scope.showMultiply = true;
-  $scope.showDivide = true;
-
   $scope.goToHomePage = function()
   {
     $state.go("homePage");
@@ -251,14 +244,6 @@ angular.module('app.controllers', [])
   $timeout(function()
   {
     var json = GameFactory.startGame($window.innerHeight, $window.innerWidth, $stateParams);
-
-    $scope.bitMask = json.bitMask;
-
-    $scope.showAdd = Utl.checkFlag($scope.bitMask, CONST.G_ADD);
-    $scope.showSubtract = Utl.checkFlag($scope.bitMask, CONST.G_SUBTRACT);
-    $scope.showMultiply = Utl.checkFlag($scope.bitMask, CONST.G_MULTIPLY);
-    $scope.showDivide = Utl.checkFlag($scope.bitMask, CONST.G_DIVIDE);
-
   },0);
 
 
