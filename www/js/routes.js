@@ -27,6 +27,7 @@ angular.module('app.routes', [])
     })
 
     .state('savedGameSelection', {
+      cache: false,
       url: '/savedGameSelection',
       templateUrl: 'templates/savedGameSelection.html',
       controller: 'savedGameSelectionCtrl'

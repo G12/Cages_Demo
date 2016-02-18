@@ -5,6 +5,7 @@
     <ion-toggle ng-model="editMode" toggle-class="toggle-assertive">Edit Mode</ion-toggle>
 
     <ion-list>
+
         <div ng-repeat="group in saved_games_list">
           <ion-item class="item-stable"
                     ng-click="toggleGroup(group)"
@@ -17,13 +18,23 @@
                     ng-show="isGroupShown(group)">
             <div class="item item-button-right">
               <a on-hold="editMode?onHold():''" class="game_selection_item" ng-click="savedGame()" href="#/cagesPuzzle/null/null/{{group.size}}/{{$index}}">
-                <h2>{{item.name}}</h2>
-                <div>
-                  <span ng-show="testBitmask('add', item.bitMask)" class="add_circle operator_icon"></span>
-                  <span ng-show="testBitmask('subtract', item.bitMask)" class="subtract_circle operator_icon"></span>
-                  <span ng-show="testBitmask('multiply', item.bitMask)" class="multiply_circle operator_icon"></span>
-                  <span ng-show="testBitmask('divide', item.bitMask)" class="divide_circle operator_icon"></span>
-                  <span>using: {{getNumberSetById(item.number_set)}}</span>
+                <div class="panelContainer">
+                  <div class="lefPanel">
+                    <piechart radius="24" ng-init="slices = getSlices(item.status)">
+                      <piechart-slice ng-repeat="slice in slices" value="{{slice.value}}" fill="{{slice.colour}}" stroke="white" />
+                    </piechart>
+                    <h3>{{getPercent(item.status)}}%</h3>
+                  </div>
+                  <div class="rightPanel">
+                    <h2>{{item.name}} : {{getNumberSetById(item.number_set)}}</h2>
+                    <div>
+                      <span ng-show="testBitmask('add', item.bitMask)" class="add_circle operator_icon"></span>
+                      <span ng-show="testBitmask('subtract', item.bitMask)" class="subtract_circle operator_icon"></span>
+                      <span ng-show="testBitmask('multiply', item.bitMask)" class="multiply_circle operator_icon"></span>
+                      <span ng-show="testBitmask('divide', item.bitMask)" class="divide_circle operator_icon"></span>
+                    </div>
+                    <h2>{{getStatusMsg(item.status)}}</h2>
+                  </div>
                 </div>
               </a>
               <button ng-show="editMode" ng-click="deleteSavedGame($index, group.size, item.name)" class="button button-assertive">

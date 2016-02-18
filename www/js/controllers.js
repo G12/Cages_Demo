@@ -14,6 +14,74 @@ angular.module('app.controllers', [])
 
 .controller('savedGameSelectionCtrl', function($scope, GameFactory, $stateParams) {
 
+  $scope.getPercent = function(status)
+  {
+    if(status)
+    {
+      if((status.total - status.set_count) == 0){return 100}
+      var percent = Math.round(status.set_count / status.total * 100);
+      return percent;
+    }
+  };
+
+  $scope.getStatusMsg = function(status)
+  {
+    var msg = "";
+    if(status)
+    {
+      var remainder = status.total - status.set_count;
+      if(remainder == 0){
+        //Return green for completed solution
+        if(status.success)
+        {
+          msg = "Winning Solution";
+        }
+        else
+        {
+          msg = "No Solution Yet";
+        }
+      }
+      else
+      {
+        msg = "Completion";
+      }
+    }
+    return msg;
+  };
+
+  $scope.getSlices = function(status)
+  {
+    var slices = []
+    if(status)
+    {
+      var remainder = status.total - status.set_count;
+      if(remainder == 0){
+        //Return green for completed solution
+        if(status.success)
+        {
+          slices.push({value:200, colour:"#00cc33"}); //green
+        }
+        else
+        {
+          slices.push({value:200, colour:"#ffcc66"}); //orange
+        }
+        slices.push({value:1, colour:"#ffcc66"}); //orange
+      }
+      else if(status.set_count == 0)
+      {
+        slices.push({value:1, colour:"#ff0000"}); //orange
+        slices.push({value:200, colour:"#ff0000"}); //red
+      }
+      else {
+        slices.push({value:status.set_count, colour:"#ffcc66"}); //orange
+        slices.push({value:remainder, colour:"#ff0000"}); //red
+      }
+    }
+    return slices;
+  };
+
+  /////////////////////   end piechart ////////////////////
+
   $scope.editMode = false;
 
   //////////////////////////////////////////   Saved Games List  ////////////////////////////////////////

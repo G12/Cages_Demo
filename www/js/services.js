@@ -428,7 +428,11 @@ angular.module('app.services', [])
         var template = getTemplateForSizeAndId(current_size, parseInt(params.id));
         if(template)
         {
+          //TODO Game.initNewGame() should be created to handle all new initializations
+          Game.status = {count:0, total:current_size*current_size, set_count:0, success:false};
+
           json = template;
+
           json.number_set = params.numberSetId;
 
           if(is_random_solution)
