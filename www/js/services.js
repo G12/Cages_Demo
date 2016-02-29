@@ -491,8 +491,11 @@ angular.module('app.services', [])
 
       GameEvents.drawPage(json);
 
-      //After the game has been drawn and processed save
-      GameEvents.saveGame(CONST.G_SAVE_GAME, false);
+      if(params.numberSetId != "null") //is_new_game) //If this is a new game
+      {
+        //After the game has been drawn and processed save
+        GameEvents.saveGame(CONST.G_SAVE_GAME, false);
+      }
 
       return json;
 

@@ -24,15 +24,15 @@ angular.module('app.controllers', [])
     }
   };
 
-  $scope.getStatusMsg = function(status)
+  $scope.getStatusMsg = function(item)
   {
     var msg = "";
-    if(status)
+    if(item)
     {
-      var remainder = status.total - status.set_count;
+      var remainder = item.status.total - item.status.set_count;
       if(remainder == 0){
         //Return green for completed solution
-        if(status.success)
+        if(item.status.success)
         {
           msg = "Winning Solution";
         }
@@ -45,13 +45,18 @@ angular.module('app.controllers', [])
       {
         msg = "Completion";
       }
+      if(item.hints && item.hints != 0)
+      {
+        var suffix = item.hints > 1 ? "s" : "";
+        msg += " "  + item.hints + " hint" + suffix;
+      }
     }
     return msg;
   };
 
   $scope.getSlices = function(status)
   {
-    var slices = []
+    var slices = [];
     if(status)
     {
       var remainder = status.total - status.set_count;
