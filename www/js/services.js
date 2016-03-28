@@ -488,6 +488,8 @@ angular.module('app.services', [])
       GameEvents.g_auto_save = true;
       //Save the Game as an object - NOT as JSON string
       GameEvents.g_save_as_object = true;
+      //Don't ask for confirmation when adding hint
+      Game.confirm_hint = false;
 
       GameEvents.drawPage(json);
 
