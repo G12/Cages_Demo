@@ -342,8 +342,8 @@ angular.module('app.services', [])
     startGame: function(height, width, params)
     {
       if(!window.cordova) {
-        height = 734;
-        width = 439;
+        height = $("#app_container_div").innerHeight()*.94;
+        width = $("#app_container_div").innerWidth()*.94;
       }
 
       var json = null;

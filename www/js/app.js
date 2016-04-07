@@ -19,7 +19,12 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
 
     if(!window.cordova)
     {
+      var height = $window.innerHeight * .94;
+      height = height < 701 ? height : 700;
+      var width = height * (400/600);
       $("#app_container_div").addClass("app_container_size");
+      $("#app_container_div").innerHeight(height);
+      $("#app_container_div").innerWidth(width);
     }
 
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
